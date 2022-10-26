@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    </head>
+   <script>
+    $(document).ready(function () {
+            var eq = "";
+            var curNumber = "";
+            var result = "";
+            var entry = "";
+            var reset = false;
+
+            $("button").click(function () {
+                entry = $(this).attr("value");
+                if (entry === "ac") {
+                    entry = 0;
+                    eq = 0;
+                    result = 0;
+                    curNumber = 0;
+                    reset = true;
+                    $('#result p').html(eq);
+                }
+
+                else if (entry === "=") {
+                    result = eval(eq);
+                    eq += "=" + result;
+                    $('#result p').html(result);
+                    eq = result;
+                    entry = result;
+                    curNumber = result;
+                    reset = true;
+                }else {
+                    if (reset) {
+                        eq = entry;
+                        curNumber = entry;
+                        reset = false;
+                    }
+                    else {
+                        eq += entry;
+                        curNumber += entry;
+                    
+                    }
+                    $('#result p').html(eq);
+                }
+             if (eq.includes("!")) {
+                    size = eq.length;
+                    n = Number(eq.substring(0, size - 1));
+                    f = 1;
+                    for (i = 2; i <= n; i++)
+                        f = f * i;
+                    eq = f;
+                } else if (eq.includes("%")) {
+
+                   size = eq.length;
+                    n = Number(eq.substring(0, size - 1));
+                    eq = n / 100;
+                }else if(eq.includes("√")){
+                    size = eq.length;
+                    n = Number(eq.substring(2, size - 1));
+                    console.log("square", n);
+                   if (eq.includes(")")) {
+                  eq = Math.sqrt(n);
+                 }
+                
+                }
+                 else if (eq.includes("^")){
+                     size = eq.length;
+                     const splits = eq.split('^', 2);
+                    if( splits[1] != "" &&  splits[0] != ""&& splits[1].includes(")")){
+                        console.log("Entry", splits);
+                       console.log(splits[1].substring(1, splits[1].length - 1));
+                            eq = Math.pow(splits[0],  splits[1].substring(1, splits[1].length-1));      
+                    }
+                 }else if(eq.includes("deg(")){
+                      size = eq.length;
+                      n = Number(eq.substring(4, size - 1));
+                     if (eq.includes(")")) {
+                     eq = n * (180 / Math.PI);
+                 } }
+
+                 
+            if(eq.includes("sin(")){
+                    size = eq.length;
+                    const splits = eq.split("in(",2)
+                    console.log(splits)
+                    // n = Number(eq.substring(4, size - 1));
+                    n = Number(splits[1].substring(0,splits[1].length-1))
+                    console.log("Number",n)
+                    if(eq.includes(")")){
+                        eq= Math.sin(n);
+                         }
+              }else if (eq.includes("cos(")) {
+                     size = eq.length;
+                  console.log(size);
+                       n = Number(eq.substring(4, size - 1));
+                  if (eq.includes(")")) {
+                      eq = Math.cos(n);
+                  }} else  if (eq.includes("tan(")) {
+                      size = eq.length;
+                      console.log(size);
+                        n = Number(eq.substring(4, size - 1));
+                      if (eq.includes(")")) {
+                          eq = Math.tan(n);
+                      }} else if (eq.includes("log(")) {
+                     size = eq.length;
+                    
+                    n = Number(eq.substring(4, size - 1));
+                    
+                  
+                    if (eq.includes(")")) {
+                    console.log("log", n); 
+                      eq = Math.log(n)/Math.LN10;
+                  }
+              }else if(eq.includes("ln(")){
+                  size = eq.length;
+                  console.log(size);
+                  n = Number(eq.substring(3, size - 1));
+                  if (eq.includes(")")) {
+                      eq = Math.log(n)/Math.log(2.71828); // 2.71828 is the value of e
+              }
+            }
+
+
+                
+            });
+
+    });
+
+
+        
+
+         
+   </script>
+    <body>
+  
+    
+    <div class="padding-manager"></div>    
+    <div class="container" id="cal-body">
+        <div id="calc" class="text-right">
+            <div id="display" class="border-rectangle">
+                <div id="result">
+                    <p>0</p>
+                </div>
+            </div>
+        </div>
+
+    <table class="table table-borderless table-responsive">
+    <tr>
+        <td>  <button value="deg(" type="button" class="btn btn-block">Deg</button></td>
+        <td> <button value="!" OnClick="result.value+='!'" type="button" class="btn btn-block">x!</button></td>
+        <td>   <button value="(" type="button" class="btn btn-block">(</button></td>
+        <td>  <button value=")" type="button"class="btn btn-block">)</button></td>
+        <td>  <button value="%" type="button" class="btn btn-block">%</button></td>
+        <td>  <button value="ac" type="button" class="btn btn-block">AC</button></td>
+    </tr>
+    <tr>
+        <td> <button value="sin(" type="button" class="btn btn-block">sin</button></td>
+        <td> <button value="ln(" type="button" class="btn btn-block">ln</button></td>
+        <td> <button value="7" type="button" id="change-color" class="btn btn-block">7</button></td>
+        <td> <button value="8" type="button" id="change-color" class="btn btn-block">8</button></td>
+        <td> <button value="9" type="button" id="change-color" class="btn btn-block">9</button></td>
+        <td> <button value="/" type="button" class="btn btn-block">÷</button></td>
+    </tr>
+        <tr>
+            <td> <button value="cos(" type="button" class="btn btn-block">cos</button></td>
+            <td> <button value="log(" type="button" class="btn btn-block">log</button></td>
+            <td> <button value="4" type="button" id="change-color"class="btn btn-block">4</button></td>
+            <td> <button value="5" type="button" id="change-color" class="btn btn-block">5</button></td>
+            <td> <button value="6" type="button" id="change-color" class="btn btn-block">6</button></td>
+            <td> <button value="*" type="button" class="btn btn-block">x</button></td>
+        </tr>
+            <tr>
+                <td> <button value="tan(" type="button" class="btn btn-block">tan</button></td>
+                <td> <button value="√(" type="button" class="btn btn-block">√</button></td>
+                <td> <button value="1" type="button" id="change-color" class="btn btn-block">1</button></td>
+                <td> <button value="2" type="button" id="change-color" class="btn btn-block">2</button></td>
+                <td> <button value="3" type="button" id="change-color" class="btn btn-block">3</button></td>
+                <td> <button value="-" type="button" class="btn btn-block"> - </button></td>
+            </tr>
+            <tr>
+                <td> <button value="E" type="button" class="btn btn-block">EXP</button></td>
+                <td> <button value="^(" type="button" class="btn btn-block">X<sup>y</sup></button></td>
+                <td> <button value="0" type="button" id="change-color" class="btn btn-block">0</button></td>
+                <td> <button value="." type="button" id="change-color" class="btn btn-block">.</button></td>
+                <td> <button value="=" type="button" class="btn btn-block bg-primary">=</button></td>
+                <td> <button value="+" type="button" class="btn btn-block">+</button></td>
+            </tr>
+        </table>
+   
+    </div>
+    
+    </body>
+
+
+</html>
